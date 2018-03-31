@@ -1,5 +1,5 @@
 package Model.Abstraction;
 
-public interface AntiBody<E> {
+public interface Antigen<E> {
 
 }
