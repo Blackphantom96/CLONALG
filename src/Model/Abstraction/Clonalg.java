@@ -11,7 +11,7 @@ public abstract class Clonalg<E> {
 			for (int j = 0; j < ag.length; j++) { // TODO Poner al antigeno y al anticuerpo .size()
 				affin[j] = affinity(ab, ag[j]);
 				abn[j] = select(ab, affin[j], n);// TODO posiblemente sobra
-				AntiBody<E>[] C = clone(ab, beta, affin[j]);
+				AntiBody<E>[] C = clone(ab, beta, affin[j], ab.length);
 				mutate(C, affin[j]);
 				double[] affinP = affinity(C, ag[j]);
 				AntiBody<E> selected = select(C, affinP, 1)[0];
@@ -37,9 +37,10 @@ public abstract class Clonalg<E> {
 	 * @param n
 	 * @return
 	 */
+
 	public abstract AntiBody<E>[] select(AntiBody<E>[] ab, double[] aff, int n);
 
-	public abstract AntiBody<E>[] clone(AntiBody<E>[] ab, double beta, double[] aff);
+	public abstract AntiBody<E>[] clone(AntiBody<E>[] ab, double beta, double[] aff, int N);
 
 	public abstract void mutate(AntiBody<E>[] ab, double[] aff);
 

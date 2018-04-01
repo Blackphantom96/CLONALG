@@ -1,6 +1,6 @@
 package Model.impl;
 
-import java.util.Map;
+import java.util.*;
 
 import Model.Abstraction.*;
 
@@ -57,11 +57,18 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff) {
-		AntiBody<boolean[]>[] res = new AntiBody[ab.length];
-		for (int i = 0; i < ab.length; i++)
-			res[i] = ab[i].clone();
-		return null;
+	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff, int N){
+		ArrayList<AntiBody<boolean[]>> res = new ArrayList<>();
+		for (int i=0; i<ab.length ;i++) {
+			int n = 0;
+			for(int j = 1; j<ab.length;j++) 
+				n+= Math.round((beta*N)/j);
+			for(int j =0; j<n;j++)
+				res.add(new OCRAntiBody(ab[i].getData().clone(),ab[i].getAffinity())); //XXX ver si funcina la clonacion
+		}
+		AntiBody<boolean[]>[] a = new AntiBody[res.size()];
+		res.toArray(a);
+		return a;
 	}
 
 	@Override
@@ -70,7 +77,8 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] generate(int d, int L) {
+	public AntiBody<boolean[]>[] generate(int d, int L){
+		
 		return null;
 	}
 
@@ -83,4 +91,6 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	public double calculateAffinity(AntiBody<boolean[]> ab, Antigen<boolean[]> sag) {
 		return functions.get(DEFAULT_AFFINITY_FUNCTION).calculate(ab, sag);
 	}
+
+
 }
