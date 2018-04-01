@@ -22,6 +22,9 @@ public class ClonalgImpl extends Clonalg<boolean[]>{
 	}
 	@Override
 	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff){
+		AntiBody<boolean[]>[] res = new AntiBody[ab.length];
+		for (int i=0; i<ab.length ;i++) 
+			res[i] = ab[i].clone();
 		return null;
 	}
 	@Override
