@@ -85,8 +85,21 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public void replace(AntiBody<boolean[]>[] ab, AntiBody<boolean[]>[] ab1, double[][] affin) {
-
+	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] r,int d, int L) {
+		ArrayList<Integer> index = new ArrayList<>();
+		if (d>0) {
+			for(int i=0;i<r.length;i++) {
+				if (d==0)
+					break;
+				else if( Arrays.binarySearch(memo, r[i])<0 ) {
+					d--;
+					r[i]=null;
+					index.add(i);
+				}
+			}
+		}
+		for(int i : index)
+			r[i]= new OCRAntiBody(L);
 	}
 
 	@Override

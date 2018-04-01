@@ -20,7 +20,7 @@ public abstract class Clonalg<E> {
 					// es M
 					abm[j] = selected;
 				AntiBody<E>[] abd = generate(d, L);
-				replace(abr, abd, affin);
+				replace(abr, abd, d,L);
 			}
 		}
 	}
@@ -46,7 +46,7 @@ public abstract class Clonalg<E> {
 
 	public abstract AntiBody<E>[] generate(int d, int L);
 
-	public abstract void replace(AntiBody<E>[] ab, AntiBody<E>[] ab1, double[][] affin);
+	public abstract void replace(AntiBody<E>[] memo, AntiBody<E>[] r, int d, int L);
 
 	public abstract double calculateAffinity(AntiBody<E> ab, Antigen<E> sag);
 
