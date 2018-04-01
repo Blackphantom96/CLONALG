@@ -3,7 +3,7 @@ package Model.Abstraction;
 public abstract class Clonalg<E> {
 	
 	public void main(AntiBody<E>[] ab, Antigen<E>[] ag, int Ngen, int n, int d, int L, double beta, int M, int N) {
-		AntiBody<E> [] abm = null ; //FIXME ver que se hace 
+		AntiBody<E> [] abm = fillRandomMemory(ab, M);
 		AntiBody<E> [] abr = null ; //FIXME ver que se hace
 		for(int i = 0; i<Ngen;i++) {
 			double[][] affin = new double[M][N];
@@ -25,7 +25,7 @@ public abstract class Clonalg<E> {
 		
 	}
 	
-	abstract void fillRandomMemory(AntiBody<E>[] ab, int x);
+	abstract AntiBody<E> []  fillRandomMemory(AntiBody<E>[] ab, int x);
 	abstract double[] affinity(AntiBody<E>[] ab, Antigen<E> sag);
 	abstract AntiBody<E>[] select(AntiBody<E>[] ab, double[] aff, int n );
 	abstract AntiBody<E>[] clone(AntiBody<E>[] ab, double beta, double[] aff);
