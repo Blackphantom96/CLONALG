@@ -78,8 +78,10 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 
 	@Override
 	public AntiBody<boolean[]>[] generate(int d, int L){
-		
-		return null;
+		AntiBody<boolean[]>[] res = new AntiBody[d];
+		for (int i =0; i<d;i++) 
+			res[i] = new OCRAntiBody(L);
+		return res;
 	}
 
 	@Override
