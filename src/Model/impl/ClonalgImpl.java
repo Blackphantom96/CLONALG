@@ -45,11 +45,6 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] fillRandomMemory(AntiBody<boolean[]>[] ab, int x) {
-		return null; // TODO: resolver duda (ref Trello)
-	}
-
-	@Override
 	public AntiBody<boolean[]>[] select(AntiBody<boolean[]>[] ab, double[] aff, int n) {
 		AntiBody<boolean[]>[] res = new AntiBody[n];
 		for (int i = 0; i < n; i++)
@@ -77,7 +72,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	public void mutate(AntiBody<boolean[]>[] ab) {
 		for (int i = 0; i < ab.length; i++) {
 			AntiBody<boolean[]> antiBody = ab[i];
-			
+
 			int numMutations = Math.min(ab.length, (int) (MUTATION_MULTIPLIER / antiBody.getAffinity()));
 
 			int dataLength = antiBody.getData().length;
@@ -103,21 +98,21 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] r,int d, int L) {
+	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] r, int d, int L) {
 		ArrayList<Integer> index = new ArrayList<>();
-		if (d>0) {
-			for(int i=0;i<r.length;i++) {
-				if (d==0)
+		if (d > 0) {
+			for (int i = 0; i < r.length; i++) {
+				if (d == 0)
 					break;
-				else if( Arrays.binarySearch(memo, r[i])<0 ) {
+				else if (Arrays.binarySearch(memo, r[i]) < 0) {
 					d--;
-					r[i]=null;
+					r[i] = null;
 					index.add(i);
 				}
 			}
 		}
-		for(int i : index)
-			r[i]= new OCRAntiBody(L);
+		for (int i : index)
+			r[i] = new OCRAntiBody(L);
 	}
 
 	@Override
