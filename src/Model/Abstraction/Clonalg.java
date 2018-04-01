@@ -12,7 +12,7 @@ public abstract class Clonalg<E> {
 				affin[j] = affinity(ab, ag[j]);
 				abn[j] = select(ab, affin[j], n);// TODO posiblemente sobra
 				AntiBody<E>[] C = clone(ab, beta, affin[j], ab.length);
-				mutate(C, affin[j]);
+				mutate(C);
 				double[] affinP = affinity(C, ag[j]);
 				AntiBody<E> selected = select(C, affinP, 1)[0];
 				if (calculateAffinity(selected, ag[j]) > calculateAffinity(abm[j], ag[j])) // TODO ver si m es el tamaño
@@ -42,7 +42,7 @@ public abstract class Clonalg<E> {
 
 	public abstract AntiBody<E>[] clone(AntiBody<E>[] ab, double beta, double[] aff, int N);
 
-	public abstract void mutate(AntiBody<E>[] ab, double[] aff);
+	public abstract void mutate(AntiBody<E>[] ab);
 
 	public abstract AntiBody<E>[] generate(int d, int L);
 

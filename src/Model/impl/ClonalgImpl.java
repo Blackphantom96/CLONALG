@@ -7,7 +7,8 @@ import Model.Abstraction.*;
 public class ClonalgImpl extends Clonalg<boolean[]> {
 
 	public static final String DEFAULT_AFFINITY_FUNCTION = "hammingComplement";
-	
+	public static final double MUTATION_MULTIPLIER = 1.0;
+
 	private interface AffinityFunction {
 		public double calculate(AntiBody<boolean[]> ab, Antigen<boolean[]> ag);
 	}
@@ -17,7 +18,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	public ClonalgImpl() {
 		generateAffinityFunctions();
 	}
-	
+
 	public void generateAffinityFunctions() {
 		functions.put("hammingComplement", (ab, ag) -> {
 			int r = 0;
@@ -45,7 +46,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 
 	@Override
 	public AntiBody<boolean[]>[] fillRandomMemory(AntiBody<boolean[]>[] ab, int x) {
-		return null;
+		return null; // TODO: resolver duda (ref Trello)
 	}
 
 	@Override
@@ -57,14 +58,15 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff, int N){
+	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff, int N) {
 		ArrayList<AntiBody<boolean[]>> res = new ArrayList<>();
-		for (int i=0; i<ab.length ;i++) {
+		for (int i = 0; i < ab.length; i++) {
 			int n = 0;
-			for(int j = 1; j<ab.length;j++) 
-				n+= Math.round((beta*N)/j);
-			for(int j =0; j<n;j++)
-				res.add(new OCRAntiBody(ab[i].getData().clone(),ab[i].getAffinity())); //XXX ver si funcina la clonacion
+			for (int j = 1; j < ab.length; j++)
+				n += Math.round((beta * N) / j);
+			for (int j = 0; j < n; j++)
+				res.add(new OCRAntiBody(ab[i].getData().clone(), ab[i].getAffinity())); // XXX ver si funcina la
+																						// clonacion
 		}
 		AntiBody<boolean[]>[] a = new AntiBody[res.size()];
 		res.toArray(a);
@@ -72,14 +74,30 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public void mutate(AntiBody<boolean[]>[] ab, double[] aff) {
+	public void mutate(AntiBody<boolean[]>[] ab) {
+		for (int i = 0; i < ab.length; i++) {
+			AntiBody<boolean[]> antiBody = ab[i];
+			
+			int numMutations = Math.min(ab.length, (int) (MUTATION_MULTIPLIER / antiBody.getAffinity()));
 
+			int dataLength = antiBody.getData().length;
+			boolean data[] = antiBody.getData();
+			int index = 0;
+			Random rand = new Random();
+			while (numMutations > 0) {
+				if (rand.nextBoolean()) {
+					data[index] = !data[index];
+					numMutations--;
+					index = (index + 1) % dataLength;
+				}
+			}
+		}
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] generate(int d, int L){
+	public AntiBody<boolean[]>[] generate(int d, int L) {
 		AntiBody<boolean[]>[] res = new AntiBody[d];
-		for (int i =0; i<d;i++) 
+		for (int i = 0; i < d; i++)
 			res[i] = new OCRAntiBody(L);
 		return res;
 	}
@@ -106,6 +124,5 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	public double calculateAffinity(AntiBody<boolean[]> ab, Antigen<boolean[]> sag) {
 		return functions.get(DEFAULT_AFFINITY_FUNCTION).calculate(ab, sag);
 	}
-
 
 }
