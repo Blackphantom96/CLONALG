@@ -25,6 +25,12 @@ public abstract class Clonalg<E> {
 	
 	public abstract double[] affinity(AntiBody<E>[] ab, Antigen<E> sag);
 	public abstract AntiBody<E> []  fillRandomMemory(AntiBody<E>[] ab, int x);
+	/**
+	 * @param ab un arreglo de anticuerpos ORDENADO por su afinidad con el antigeno en revision
+	 * @param aff 
+	 * @param n
+	 * @return 
+	 */
 	public abstract AntiBody<E>[] select(AntiBody<E>[] ab, double[] aff, int n );
 	public abstract AntiBody<E>[] clone(AntiBody<E>[] ab, double beta, double[] aff);
 	public abstract void mutate(AntiBody<E>[] ab, double[] aff);

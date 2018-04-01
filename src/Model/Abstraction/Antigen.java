@@ -1,5 +1,6 @@
 package Model.Abstraction;
 
-public interface Antigen<E> {
-	public E getE();
+import java.io.Serializable;
+
+public interface Antigen<E> extends Cloneable{
 }

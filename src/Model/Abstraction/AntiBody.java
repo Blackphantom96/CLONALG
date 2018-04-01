@@ -1,5 +1,7 @@
 package Model.Abstraction;
 
-public interface AntiBody<E> {
+import java.io.Serializable;
+
+public interface AntiBody<E> extends Cloneable{
 
 }

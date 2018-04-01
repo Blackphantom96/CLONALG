@@ -12,9 +12,13 @@ public class ClonalgImpl extends Clonalg<boolean[]>{
 	public AntiBody<boolean[]> []  fillRandomMemory(AntiBody<boolean[]>[] ab, int x){
 		return null;
 	}
+
 	@Override
 	public AntiBody<boolean[]>[] select(AntiBody<boolean[]>[] ab, double[] aff, int n ){
-		return null;
+		AntiBody<boolean[]>[] res = new AntiBody[n];
+		for (int i=0; i<n ;i++) 
+			res[i] = ab[i];
+		return res;
 	}
 	@Override
 	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff){
