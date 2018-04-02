@@ -43,8 +43,11 @@ public abstract class Clonalg<E> {
 				AntiBody<E> bestAB = cloned[0];
 				//System.out.println(bestAB);
 				if (bestAB.getAffinity() < abm[j].getAffinity()) {
-					System.out.println("mejoro");
 					abm[j] = bestAB;
+					ArrayList<AntiBody<E>> temp = new ArrayList<>(Arrays.asList(ab));
+					temp.add(bestAB);
+					ab = new AntiBody[temp.size()];
+					temp.toArray(ab);
 				}
 				replace(abm, ab, d, L);
 			}
