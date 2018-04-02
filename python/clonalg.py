@@ -66,16 +66,20 @@ def clone(ab, beta, N):
 
 def mutate(ab):
     for i in range(len(ab)):
-        num_mutations = min(len(ab[i].data), MUTATION_MULTIPLIER * ab[i].aff)
+        num_mutations = int(min(len(ab[i].data), MUTATION_MULTIPLIER * ab[i].aff))
 
         length = len(ab[i].data)
         data = ab[i].data
+
+        assert all(isinstance(e, bool) for e in data), "{}".format(data)
 
         index = 0
         while num_mutations > 0:
             index = random.randint(0, length-1)
             data[index] = not data[index]
             num_mutations -= 1
+
+        assert all(isinstance(e, bool) for e in data), "{}".format(data)
 
 def replace(abd, abr, d, L, abm):
     assert d < len(abr)
