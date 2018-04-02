@@ -108,7 +108,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] r, int d, int L) {
 		ArrayList<Integer> index = new ArrayList<>();
 		if (d > 0) {
-			for (int i = 0; i < r.length; i++) {
+			for (int i = r.length-1; i >=0; i--) {
 				if (d == 0)
 					break;
 				else if (Arrays.binarySearch(memo, r[i]) < 0) {
