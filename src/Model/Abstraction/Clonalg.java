@@ -13,15 +13,20 @@ public abstract class Clonalg<E> {
 			abm[i] = ab[rand.nextInt(ab.length)];
 		}
 		for (int g = 0; g < Ngen; g++) {
-			System.out.println(g + " " + Arrays.toString(abm));
+			for(int i=0;i<ag.length;i++) {
+				abm[i].setAffinity(calculateAffinity(abm[i], ag[i]));
+			}
+			//System.out.println(g + " " + Arrays.toString(abm));
 			flag = true;
 			for (AntiBody<E> w : abm)
 				if (w.getAffinity() != 0) {
 					flag = false;
 					break;
 				}
-			if (flag)
+			if (flag) {
+				System.out.println("termino en la generacion "+g);
 				return abm;
+			}
 			for (int j = 0; j < ag.length; j++) {
 				affinity(ab, ag[j]);
 				Arrays.sort(ab);
@@ -41,13 +46,15 @@ public abstract class Clonalg<E> {
 				affinity(cloned, ag[j]);
 				Arrays.sort(cloned);
 				AntiBody<E> bestAB = cloned[0];
-				//System.out.println(bestAB);
+				
 				if (bestAB.getAffinity() < abm[j].getAffinity()) {
-					abm[j] = bestAB;
 					ArrayList<AntiBody<E>> temp = new ArrayList<>(Arrays.asList(ab));
 					temp.add(bestAB);
+					temp.remove(abm[j]);
+					abm[j] = bestAB;
 					ab = new AntiBody[temp.size()];
 					temp.toArray(ab);
+					//System.out.println(j+" "+abm[j].getAffinity());
 				}
 				replace(abm, ab, d, L);
 			}
