@@ -20,6 +20,8 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	public void generateAffinityFunctions() {
+		functions = new HashMap<>();
+		
 		functions.put("hammingComplement", (ab, ag) -> {
 			int r = 0;
 			boolean abData[] = ab.getData();
