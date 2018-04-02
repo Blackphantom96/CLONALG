@@ -25,8 +25,8 @@ def main():
 
     for g in ag:
         print_image(g.data)
-    
-    print("\n".join(compute(ag, ab, GEN, n, d, beta, L)))
+
+    print("\n".join([str(i) for i in compute(ag, ab, GEN, n, d, beta, L)]))
 
 if __name__ == "__main__":
     main()

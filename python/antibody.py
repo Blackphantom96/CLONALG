@@ -13,7 +13,7 @@ class Antibody():
 
     def __repr__(self):
         # return "<data: {}, aff: {}>".format(self.data, self.aff)
-        return "< aff: {}>".format(self.data, self.aff)
+        return "< aff: {}>".format( self.aff)
 
     def __str__(self):
         return "<data: {}, aff: {}>".format(self.data, self.aff)

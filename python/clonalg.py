@@ -19,7 +19,6 @@ def print_image(image):
         output += '\n'
     print(output)
 
-    
 def calc_affinity(ag, ab):
     d = 0
     # print(ag, ab)
@@ -28,7 +27,7 @@ def calc_affinity(ag, ab):
 
     ab.aff = d
     return d
-    
+
 def clone_antibody(ab, beta, n, aff_rank):
     n_c = int(round(beta * n / float(aff_rank)))
 
@@ -59,9 +58,7 @@ def clone(ab, beta, N):
         n = 0
         for j in range(1, len(ab)+1):
             n += round((beta * N) / float(j))
-
         res.extend([copy.deepcopy(ab[i]) for _ in range(n)])
-
     return res
 
 def mutate(ab):
@@ -71,16 +68,11 @@ def mutate(ab):
         length = len(ab[i].data)
         data = ab[i].data
 
-        assert all(isinstance(e, bool) for e in data), "{}".format(data)
-
         index = 0
         while num_mutations > 0:
             index = random.randint(0, length-1)
             data[index] = not data[index]
             num_mutations -= 1
-
-        assert all(isinstance(e, bool) for e in data), "{}".format(data)
-
 def replace(abd, abr, d, L, abm):
     assert d < len(abr)
     
@@ -98,29 +90,25 @@ def generate(d, L):
 
 def compute(ag,ab,gen,n,d,beta, L):
     # print(ag,ab,gen,n,d,beta, L)
-    
+
     d = min(d, len(ab) - len(ag))
 
-    abm = generate(len(ag), L)
-    
+    abm = random.sample(ab, len(ag))
     for g in range(gen):
         print("Generation", g)
-        if all(antibody.aff == 0 for antibody in ab):
-            print("Early termination {}".format(g))
-            continue
-
-        for j in range(len(ag)):
+        for j, antigen in enumerate(ag):
             affinity(ab, ag[j])
             ab.sort(key=lambda x: x.aff)
             selected = select(ab, n)
             C = clone(selected, beta, len(ab))
+            print(len(C))
             mutate(C)
+            print(g)
             affinity(C, ag[j])
             C.sort(key=lambda x: x.aff)
             best_ab = select(C, 1)[0]
             if best_ab.aff < abm[j].aff:
                 abm[j] = best_ab
             replace(abm, ab, d, L, abm)
-
     # print(abm)
     return abm

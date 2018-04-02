@@ -1,5 +1,6 @@
 package Model.Abstraction;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class Clonalg<E> {
@@ -16,8 +17,13 @@ public abstract class Clonalg<E> {
 				affinity(clone, ag[j]);
 				Arrays.sort(clone);
 				AntiBody<E> bestAB = select(clone,1)[0];
-				if(bestAB.getAffinity() < abm[j].getAffinity() )
+				if(bestAB.getAffinity() < abm[j].getAffinity() ) {
 					abm[j] = bestAB;
+					ArrayList<AntiBody<E>> temp = new ArrayList<>(Arrays.asList(ab));
+					temp.add(bestAB);
+					ab = new AntiBody[temp.size()];
+					temp.toArray(ab);
+				}
 				replace(abm, ab, d, L);
 			}
 			
