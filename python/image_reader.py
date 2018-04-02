@@ -1,8 +1,8 @@
-from matplotlib import pylab
+from matplotlib.pylab import *
 from antigen import Antigen
 
 def create_antigen(name):
-    image_matrix = pylab.imread('../src/images/' + name + '.png') # TODO
+    image_matrix = imread('../src/images/' + name + '.png') # TODO
     data = []
 
     for row in image_matrix:
