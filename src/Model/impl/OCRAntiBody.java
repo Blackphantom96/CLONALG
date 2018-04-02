@@ -1,5 +1,6 @@
 package Model.impl;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import Model.Abstraction.AntiBody;
@@ -23,7 +24,7 @@ public class OCRAntiBody implements AntiBody<boolean[]>{
 		data = new boolean[x];
 		for(int i =0 ; i<x;i++)
 			data[i] = rand.nextBoolean();
-		this.affinity = Double.MIN_VALUE;
+		this.affinity = Double.MAX_VALUE;
 	}
 	
 
@@ -48,7 +49,17 @@ public class OCRAntiBody implements AntiBody<boolean[]>{
 	}
 	@Override
 	public int compareTo(AntiBody<boolean[]> o) {
-		return affinity < o.getAffinity()?1:0;
+		return affinity < o.getAffinity()?-1:0;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		AntiBody<boolean[]> x = (AntiBody<boolean[]>) obj;
+		return Arrays.equals(data, x.getData());
+	}
+	
+	@Override
+	public String toString() {
+		return Double.toString(affinity);
 	}
 	
 }
