@@ -36,7 +36,7 @@ public class Main {
 		}
 		ClonalgImpl clonalg = new ClonalgImpl();
 												//           AB            AG  Ngen  n  d    L   Beta
-		AntiBody<boolean[]>[] res = clonalg.main(clonalg.generate(10, 120), ags,500, 5, 0, w * h, 10  );
+		AntiBody<boolean[]>[] res = clonalg.main(clonalg.generate(10, 120), ags,500, 5, 1, w * h, 10  );
 		for (AntiBody<boolean[]> a: res) {
 			System.out.println(a.getAffinity());
 			printNumber(a.getData(), w, h);

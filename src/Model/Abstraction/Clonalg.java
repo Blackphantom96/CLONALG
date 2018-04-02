@@ -6,6 +6,7 @@ public abstract class Clonalg<E> {
 
 	public AntiBody<E>[] main(AntiBody<E>[] ab, Antigen<E>[] ag, int Ngen, int n, int d, int L, double beta) {
 		Random rand = new Random();
+		d = Math.min(d, ab.length-ag.length);
 		AntiBody<E>[] abm = new AntiBody[ag.length];
 		boolean flag = true;
 		for (int i = 0; i < ag.length; i++) {
@@ -25,23 +26,26 @@ public abstract class Clonalg<E> {
 				affinity(ab, ag[j]);
 				Arrays.sort(ab);
 				AntiBody<E>[] selected = select(ab, n);
-				int affRank = 1;
+				int affRank = 100;
 				ArrayList<AntiBody<E>> muted = new ArrayList<AntiBody<E>>();
-				for (int k = 0; k < n; k++) {
-					AntiBody<E>[] cloned1 = clone(selected[k], beta, ab.length, affRank);
-					for (int l = 0; l < cloned1.length; l++) {
-						muted.add(mutate(cloned1[l], affRank));
+				for (AntiBody<E> antibody : selected) {
+					affRank+=1;
+					AntiBody<E>[] cloned1 = clone(antibody, beta, ab.length, affRank);
+					for (AntiBody<E> antibody1 : cloned1) {
+						mutate(antibody1, affRank);
+						muted.add(antibody1);
 					}
-					affRank++;
 				}
 				AntiBody<E>[] cloned = new AntiBody[muted.size()];
 				muted.toArray(cloned);
 				affinity(cloned, ag[j]);
 				Arrays.sort(cloned);
-				System.out.println(Arrays.toString(cloned));
-				AntiBody<E> bestAB = select(cloned, 1)[0];
-				if (bestAB.getAffinity() < abm[j].getAffinity())
+				AntiBody<E> bestAB = cloned[0];
+				//System.out.println(bestAB);
+				if (bestAB.getAffinity() < abm[j].getAffinity()) {
+					System.out.println("mejoro");
 					abm[j] = bestAB;
+				}
 				replace(abm, ab, d, L);
 			}
 

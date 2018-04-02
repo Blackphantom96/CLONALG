@@ -47,22 +47,21 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 
 	@Override
 	public AntiBody<boolean[]>[] select(AntiBody<boolean[]>[] ab, int n) {
-		AntiBody<boolean[]>[] res = new AntiBody[n];
-		for (int i = 0; i < n; i++) {
-			res[i] = ab[i];
-		}
-		return res;
+//		AntiBody<boolean[]>[] res = new AntiBody[n];
+//		for (int i = 0; i < n; i++) {
+//			res[i] = ab[i];
+//		}
+//		return res;
+		return Arrays.copyOf(ab, n);
 	}
 
 	@Override
 	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]> ab, double beta, int N, int affinityRank) {
-		ArrayList<AntiBody<boolean[]>> res = new ArrayList<>();
-		int n = (int) Math.round(beta * N / affinityRank);
+		int n = (int) Math.round((beta * N) / affinityRank);
+		AntiBody<boolean[]>[] a = new AntiBody[n];
 		for (int j = 0; j < n; j++) {
-			res.add(new OCRAntiBody(clone(ab.getData()), ab.getAffinity()));
+			a[j]=new OCRAntiBody(Arrays.copyOf(ab.getData(), ab.getData().length), ab.getAffinity());
 		}
-		AntiBody<boolean[]>[] a = new AntiBody[res.size()];
-		res.toArray(a);
 		return a;
 	}
 
@@ -90,21 +89,21 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] r, int d, int L) {
+	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] ab, int d, int L) {
 		ArrayList<Integer> index = new ArrayList<>();
 		if (d > 0) {
-			for (int i = r.length - 1; i >= 0; i--) {
+			for (int i = ab.length - 1; i >= 0; i--) {
 				if (d == 0)
 					break;
-				else if (Arrays.binarySearch(memo, r[i]) < 0) {
+				else if (Arrays.binarySearch(memo, ab[i]) < 0) {
 					d--;
-					r[i] = null;
+					ab[i] = null;
 					index.add(i);
 				}
 			}
 		}
 		for (int i : index)
-			r[i] = new OCRAntiBody(L);
+			ab[i] = new OCRAntiBody(L);
 	}
 
 	@Override
@@ -112,13 +111,6 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 		double r = functions.get(DEFAULT_AFFINITY_FUNCTION).calculate(ab, sag);
 		ab.setAffinity(r);
 		return r;
-	}
-
-	private boolean[] clone(boolean[] bs) {
-		boolean[] res = new boolean[bs.length];
-		for (int i = 0; i < bs.length; i++)
-			res[i] = bs[i];
-		return res;
 	}
 
 }
