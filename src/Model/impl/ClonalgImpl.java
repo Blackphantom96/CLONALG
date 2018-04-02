@@ -7,7 +7,7 @@ import Model.Abstraction.*;
 public class ClonalgImpl extends Clonalg<boolean[]> {
 
 	public static final String DEFAULT_AFFINITY_FUNCTION = "hammingComplement";
-	public static final double MUTATION_MULTIPLIER = 1.0;
+	public static final double MUTATION_MULTIPLIER = 1;
 
 	private interface AffinityFunction {
 		public double calculate(AntiBody<boolean[]> ab, Antigen<boolean[]> ag);
@@ -42,7 +42,6 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 		for (int i = 0; i < size; i++) {
 			r[i] = calculateAffinity(ab[i], sag);
 		}
-
 		return r;
 	}
 
@@ -56,44 +55,30 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, int N) {
+	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]> ab, double beta, int N, int affinityRank) {
 		ArrayList<AntiBody<boolean[]>> res = new ArrayList<>();
-		for (int i = 0; i < ab.length; i++) {
-			int n = 0;
-			for (int j = 1; j <= ab.length; j++) {
-				n += Math.round((beta * N) / j);
-			}
-			for (int j = 0; j < n; j++) {
-				res.add(new OCRAntiBody(clone(ab[i].getData()), ab[i].getAffinity()));
-			}
+		int n = (int) Math.round(beta * N / affinityRank);
+		for (int j = 0; j < n; j++) {
+			res.add(new OCRAntiBody(clone(ab.getData()), ab.getAffinity()));
 		}
 		AntiBody<boolean[]>[] a = new AntiBody[res.size()];
 		res.toArray(a);
-		// System.err.println(Arrays.toString(a));
 		return a;
 	}
 
+	static Random rand = new Random();
+
 	@Override
-	public void mutate(AntiBody<boolean[]>[] ab) {
-
-		for (int i = 0; i < ab.length; i++) {
-			AntiBody<boolean[]> antiBody = ab[i];
-
-			int numMutations = Math.min(antiBody.getData().length,
-					(int) (MUTATION_MULTIPLIER * antiBody.getAffinity()));
-			// System.err.println(numMutations);
-			int dataLength = antiBody.getData().length;
-			boolean data[] = antiBody.getData();
-			int index = 0;
-			Random rand = new Random();
-			while (numMutations > 0) {
-				index = rand.nextInt(ab[0].getData().length);
-				data[index] = !data[index];
-				numMutations--;
-			}
-
+	public AntiBody<boolean[]> mutate(AntiBody<boolean[]> ab, int affRank) {
+		int n = Math.min(affRank, ab.getData().length);
+		Set<Integer> index = new TreeSet<>();
+		while (index.size() != n) {
+			int x = rand.nextInt(ab.getData().length);
+			index.add(x);
 		}
-
+		for (int i : index)
+			ab.getData()[i] = !ab.getData()[i];
+		return ab;
 	}
 
 	@Override
@@ -108,7 +93,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	public void replace(AntiBody<boolean[]>[] memo, AntiBody<boolean[]>[] r, int d, int L) {
 		ArrayList<Integer> index = new ArrayList<>();
 		if (d > 0) {
-			for (int i = r.length-1; i >=0; i--) {
+			for (int i = r.length - 1; i >= 0; i--) {
 				if (d == 0)
 					break;
 				else if (Arrays.binarySearch(memo, r[i]) < 0) {
