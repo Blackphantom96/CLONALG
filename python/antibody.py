@@ -10,10 +10,11 @@ class Antibody():
             self.data = [random.random() >= 0.5 for i in range(length)]
 
         self.aff = float('inf')
+        self.maff = float('inf')
 
     def __repr__(self):
         # return "<data: {}, aff: {}>".format(self.data, self.aff)
-        return "< aff: {}>".format( self.aff)
+        return str(self.aff)
 
     def __str__(self):
-        return "<data: {}, aff: {}>".format(self.data, self.aff)
+        return str(self.aff)

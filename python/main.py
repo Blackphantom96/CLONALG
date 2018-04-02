@@ -13,10 +13,10 @@ def create_antigens():
     return ag
 
 L = 120
-N = 15
-GEN = 2
-n = 15
-d = 2
+N = 10
+GEN = 60
+n = 5
+d = 0
 beta = 10
 
 def main():
@@ -26,8 +26,10 @@ def main():
     for g in ag:
         print_image(g.data)
 
-    print("\n".join([str(i) for i in compute(ag, ab, GEN, n, d, beta, L)]))
+    res=compute(ag, ab, GEN, n, d, beta, L)
 
+    for a in res:
+        print_image(a.data)
 if __name__ == "__main__":
     main()
 

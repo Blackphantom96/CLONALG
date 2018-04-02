@@ -3,6 +3,7 @@ from antibody import *
 from antigen import *
 import copy
 import random
+import operator
 
 MUTATION_MULTIPLIER = 1.0
 
@@ -25,7 +26,7 @@ def calc_affinity(ag, ab):
     for i in range(len(ab.data)):
         d += 1 if ab.data[i] != ag.data[i] else 0
 
-    ab.aff = d
+#    ab.aff = d
     return d
 
 def clone_antibody(ab, beta, n, aff_rank):
@@ -52,63 +53,51 @@ def affinity(ab, ag):
 def select(ab, n):
     return ab[:n]
 
-def clone(ab, beta, N):
-    res = []
-    for i in range(len(ab)):
-        n = 0
-        for j in range(1, len(ab)+1):
-            n += round((beta * N) / float(j))
-        res.extend([copy.deepcopy(ab[i]) for _ in range(n)])
-    return res
-
-def mutate(ab):
-    for i in range(len(ab)):
-        num_mutations = int(min(len(ab[i].data), MUTATION_MULTIPLIER * ab[i].aff))
-
-        length = len(ab[i].data)
-        data = ab[i].data
-
-        index = 0
-        while num_mutations > 0:
-            index = random.randint(0, length-1)
-            data[index] = not data[index]
-            num_mutations -= 1
-def replace(abd, abr, d, L, abm):
-    assert d < len(abr)
-    
-    abr.sort(key=lambda x: x.aff)
-    if d > 0:
-        for i in range(len(abr)-1, -1, -1):
-            if (abr[i] not in abm and d > 0):
-                abr[i] = Antibody(L)
-                d -= 1
-    if d > 0:
-        abr.extend([Antibody(L) for _ in range(d)])
-
-def generate(d, L):
-    return [Antibody(L) for _ in range(d)]
 
 def compute(ag,ab,gen,n,d,beta, L):
     # print(ag,ab,gen,n,d,beta, L)
-
-    d = min(d, len(ab) - len(ag))
-
     abm = random.sample(ab, len(ag))
+    d = min(d, len(ab) - len(ag))
+    flag = False
     for g in range(gen):
         print("Generation", g)
+        #print(abm)
         for j, antigen in enumerate(ag):
-            affinity(ab, ag[j])
+            #affinity(ab, antigen)
+            for antibody in ab:
+                antibody.aff = calc_affinity(antigen, antibody)
             ab.sort(key=lambda x: x.aff)
             selected = select(ab, n)
-            C = clone(selected, beta, len(ab))
-            print(len(C))
-            mutate(C)
-            print(g)
-            affinity(C, ag[j])
-            C.sort(key=lambda x: x.aff)
-            best_ab = select(C, 1)[0]
-            if best_ab.aff < abm[j].aff:
-                abm[j] = best_ab
-            replace(abm, ab, d, L, abm)
-    # print(abm)
+            affRank =0
+            clones = []
+
+            for a1 in selected:
+                affRank += 1
+                clones1 = clone_antibody(a1, beta, len(ab),affRank)
+                for a2 in clones1:
+                    clones.append(mutate_antibody(a2,affRank))
+            #affinity(clones,antigen)
+            for antibody in clones:
+                antibody.aff = calc_affinity(antigen, antibody)
+            #clones.sort(key=lambda antibody: antibody.aff)
+            best = min(clones, key=operator.attrgetter('aff'))
+            if best.aff < abm[j].maff:
+                print(best.aff)
+                old = abm[j]
+                ab.remove(old)
+
+                best.maff = best.aff
+                ab.append(best)
+                abm[j] = best
+            if d > 0:
+                ab.sort(key=lambda antibody: antibody.aff)
+                num_to_kill = d
+                for i in range(len(ab) - 1, -1, -1):
+                    if num_to_kill == 0:
+                        break
+
+                    if ab[i] not in abm:
+                        num_to_kill -= 1
+                        del ab[i]
+                ab = ab + [Antibody(L) for _ in range(d)]
     return abm
