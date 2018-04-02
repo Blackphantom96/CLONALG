@@ -26,7 +26,7 @@ public abstract class Clonalg<E> {
 				affinity(ab, ag[j]);
 				Arrays.sort(ab);
 				AntiBody<E>[] selected = select(ab, n);
-				int affRank = 100;
+				int affRank = 0;
 				ArrayList<AntiBody<E>> muted = new ArrayList<AntiBody<E>>();
 				for (AntiBody<E> antibody : selected) {
 					affRank+=1;
