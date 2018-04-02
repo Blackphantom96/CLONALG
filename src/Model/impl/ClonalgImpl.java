@@ -117,7 +117,9 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 
 	@Override
 	public double calculateAffinity(AntiBody<boolean[]> ab, Antigen<boolean[]> sag) {
-		return functions.get(DEFAULT_AFFINITY_FUNCTION).calculate(ab, sag);
+		double r = functions.get(DEFAULT_AFFINITY_FUNCTION).calculate(ab, sag);
+		ab.setAffinity(r);
+		return r;
 	}
 
 }
