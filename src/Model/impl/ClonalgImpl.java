@@ -45,7 +45,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] select(AntiBody<boolean[]>[] ab, double[] aff, int n) {
+	public AntiBody<boolean[]>[] select(AntiBody<boolean[]>[] ab, int n) {
 		AntiBody<boolean[]>[] res = new AntiBody[n];
 		for (int i = 0; i < n; i++)
 			res[i] = ab[i];
@@ -53,7 +53,7 @@ public class ClonalgImpl extends Clonalg<boolean[]> {
 	}
 
 	@Override
-	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, double[] aff, int N) {
+	public AntiBody<boolean[]>[] clone(AntiBody<boolean[]>[] ab, double beta, int N) {
 		ArrayList<AntiBody<boolean[]>> res = new ArrayList<>();
 		for (int i = 0; i < ab.length; i++) {
 			int n = 0;

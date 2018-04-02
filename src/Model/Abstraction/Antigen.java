@@ -1,14 +1,9 @@
 package Model.Abstraction;
 
-import java.io.Serializable;
 
-public interface Antigen<E> extends Cloneable{
+public interface Antigen<E>{
 
 	boolean[] getData();
 
 	void setData(boolean[] data);
-
-	double getAffinity();
-
-	void setAffinity(double affinity);
 }

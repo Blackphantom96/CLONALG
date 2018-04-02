@@ -1,8 +1,7 @@
 package Model.Abstraction;
 
-import java.io.Serializable;
 
-public interface AntiBody<E> extends Cloneable{
+public interface AntiBody<E> extends Comparable<AntiBody<E>>{
 
 	boolean[] getData();
 

@@ -46,5 +46,9 @@ public class OCRAntiBody implements AntiBody<boolean[]>{
 	public void setAffinity(double affinity) {
 		this.affinity = affinity;
 	}
+	@Override
+	public int compareTo(AntiBody<boolean[]> o) {
+		return affinity < o.getAffinity()?1:0;
+	}
 	
 }
