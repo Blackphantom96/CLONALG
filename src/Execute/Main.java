@@ -18,20 +18,22 @@ public class Main {
 	static int w = 0;
 
 	public static void main(String[] args) throws Exception {
-		OCRAntigen[] ags = new OCRAntigen[10];
+		
 		ClonalgImpl clonalg = new ClonalgImpl();
 		final int MAXCHAR = 1;
+		final int MAXAGS = 20;
+		OCRAntigen[] ags = new OCRAntigen[MAXAGS];
 		ArrayList<AntiBody<boolean[]>[]> trainedAB = new ArrayList<>();
 		for (int folder = 0; folder <= MAXCHAR; folder++) {
 			System.out.println("char: " + folder);
 
-			for (int i = 1; i < 11; i++) {
+			for (int i = 1; i <= MAXAGS; i++) {
 				// printNumber(temp, w, h);
 				ags[i - 1] = new OCRAntigen(getAntigen(folder, i));
 			}
 			clonalg = new ClonalgImpl();
 			// AB AG Ngen n d L Beta
-			AntiBody<boolean[]>[] res = clonalg.main(clonalg.generate(10, h * w), ags, 1900, 5, 3, h * w, 10);
+			AntiBody<boolean[]>[] res = clonalg.main(clonalg.generate(MAXAGS, h * w), ags, 1900, 5, 3, h * w, 10);
 			trainedAB.add(res);
 			for (AntiBody<boolean[]> a : res) {
 				System.out.println(a.getAffinity());
